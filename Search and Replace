@@ -1,0 +1,18 @@
+/*
+Perform a search and replace on the sentence using the arguments provided and return the new sentence.
+First argument is the sentence to perform the search and replace on.
+Second argument is the word that you will be replacing (before).
+Third argument is what you will be replacing the second argument with (after).
+*/
+
+function myReplace(str, before, after) {
+  const remainingLetters = after.substring(1);
+  return str.replace(before, ((/^[A-Z]/).test(before) ? after[0].toUpperCase().concat(remainingLetters) : after[0].toLowerCase().concat(remainingLetters)));
+  // Replace the 2nd argument with the 3rd argument
+  // Create constant variable holding 3rd argument's letters after first letter
+  // Using If ternary operator, use regex test to see if 2nd argument begins with a capital letter
+  // If true, capitalize first letter of 3rd argument and concat remaining letters
+  // If false, lowercase first letter of 3rd argument and concat remaining letters
+}
+
+console.log(myReplace("A quick brown fox Jumped over the lazy dog", "Jumped", "leaped"));
