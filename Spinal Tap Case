@@ -1,0 +1,12 @@
+// Convert a string to spinal case (all-lowercase-words-joined-by-dashes)
+
+function spinalCase(str) {
+  return str.match(/([A-Z]?[a-z]+)/g).join('-').toLowerCase();
+  /* Returns an array of matches matching the regex expression
+     Words are separated by non-letters or camel-case, the first word may not be capitalized (hence the once or none (?) quantifier)
+     Afterwards, we match all the lowercase letters until it hits a non-letter or capitalized letter
+     Use global (g) flag to pull multiple matches
+     Resulting array string is then joined by dashes into a single string and lowercased
+}
+
+console.log(spinalCase("AllThe-small Things"));
