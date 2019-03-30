@@ -1,0 +1,31 @@
+/*
+The DNA strand is missing the pairing element. Take each character, get its pair, and return the results as a 2d array.
+Base pairs are a pair of AT and CG. Match the missing element to the provided character.
+Return the provided character as the first element in each array.
+For example, for the input GCG, return [["G", "C"], ["C","G"],["G", "C"]]
+*/
+
+function pairElement(str) {
+  return str.split('').map(function(char) {
+  // Use an empty string to split string into individual characters
+  // Use map method to apply following function to each element, char is the placeholder for each element
+    switch(char) {
+    // Use switch statement to determine pairing for each possible combination
+    // Each time the callback function is ran on an element, it must return something to fill the new array
+      case 'A':
+        return ['A', 'T'];
+        break;
+      case 'T':
+        return ['T', 'A'];
+        break;
+      case 'C':
+        return ['C','G'];
+        break;
+      case 'G':
+        return ['G','C'];
+        break;
+    }
+  }
+)}
+
+console.log(pairElement("GCG"));
