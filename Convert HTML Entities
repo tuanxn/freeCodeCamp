@@ -1,0 +1,38 @@
+// Convert the characters &, <, >, " (double quote), and ' (apostrophe), in a string to their corresponding HTML entities.
+
+function convertHTML(str) {
+  let illegalChars = str.match(/[^\s\w]/g);
+  console.log(illegalChars);
+  let newStr = str;
+
+  if (!illegalChars) {
+    return newStr;
+  }
+
+  for (let i=0; i<illegalChars.length; i++) {
+    newStr = newStr.replace(illegalChars[i], function () {
+      switch (illegalChars[i]) {
+        case '&': 
+          return '&amp;';
+          break;
+        case '<': 
+          return '&lt;';
+          break;
+        case '>': 
+          return '&gt;';
+          break;
+        case '"': 
+          return '&quot;';
+          break;
+        case '\'':
+          return '&apos;';
+          break;
+      }
+    });
+    console.log(newStr);
+  }
+  console.log(newStr);
+  return newStr;
+}
+
+convertHTML(" abc");
