@@ -1,0 +1,44 @@
+/*
+Find the missing letter in the passed letter range and return it.
+If all letters are present in the range, return undefined.
+*/
+
+function fearNotLetter(strArr) {
+  let higherMidIndex = Math.floor(strArr.length / 2);
+  let startLetter = strArr[0].charCodeAt(0) % 97;
+  let endLetter = strArr[strArr.length -1].charCodeAt(0) % 97;
+
+  let desiredRange = endLetter - startLetter + 1;
+  let actualRange = strArr.length;
+
+  let str1 = strArr.slice(0, higherMidIndex);
+  let str2 = strArr.slice(higherMidIndex);
+
+  console.log(strArr);
+  console.log(strArr[higherMidIndex+1].charCodeAt(0) % 97);
+  console.log(strArr[higherMidIndex].charCodeAt(0) % 97);
+  // console.log(str1);
+  // console.log(str2);
+
+  if (desiredRange == actualRange) {
+    console.log('matches');
+  }else if ((((strArr[higherMidIndex+1].charCodeAt(0) % 97) - strArr[higherMidIndex].charCodeAt(0) % 97) + 1) != 2) {
+    return String.fromCharCode(strArr[higherMidIndex].charCodeAt(0) % 97+1+65).toLowerCase();
+  }else if ((((strArr[higherMidIndex].charCodeAt(0) % 97) - strArr[higherMidIndex-1].charCodeAt(0) % 97) + 1) != 2) {
+    return String.fromCharCode(strArr[higherMidIndex-1].charCodeAt(0) % 97+1+65).toLowerCase();
+  }else if (strArr.length == 2) {
+    console.log(String.fromCharCode(startLetter+1+65).toLowerCase());
+    return String.fromCharCode(startLetter+1+65).toLowerCase();
+  }else if (str1.length == 1) {
+    return fearNotLetter(strArr.slice(higherMidIndex-1, higherMidIndex+1));
+  }
+  else if (str1.length == ((str1[str1.length-1].charCodeAt(0) % 97) - str1[0].charCodeAt(0) % 97) + 1) {
+    console.log('not 1');
+    return fearNotLetter(str2);
+  }else {
+    console.log('not 2');
+    return fearNotLetter(str1);
+  }
+}
+
+console.log(fearNotLetter("stvwx"));
