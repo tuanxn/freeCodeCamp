@@ -1,0 +1,16 @@
+
+
+function uniteUnique(...arr) { // if we do not use the spread operator, then only the first array is pulled
+  let finalArr = [...(arr[0])]; // fill final array with first nested array in the passed array
+  console.log(finalArr);
+  for (let i=1; i<arr.length; i++) { // loop through each nested array starting with 2nd element
+    for (let j=0; j<arr[i].length; j++) { // loop through each element in the nested array
+      (finalArr.indexOf(arr[i][j]) > -1) ? '' : finalArr.push(arr[i][j]);
+      // Use ternary operator to check if element in nested array exists in final array, if not, push to final array
+    }
+  }
+  console.log(finalArr);
+  return finalArr;
+}
+
+uniteUnique([1, 3, 2], [5, 2, 1, 4], [2, 1]);
