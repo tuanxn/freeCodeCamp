@@ -1,0 +1,28 @@
+/*
+Sum all the prime numbers up to and including the provided number.
+A prime number is defined as a number greater than one and having only two divisors, one and itself. 
+For example, 2 is a prime number because it's only divisible by one and two.
+*/
+
+function sumPrimes(num) {
+  const primes = [2]; 
+  // first prime
+  for (let i=2; i<=num; i++) { 
+  // iterate through all numbers up until the num argument
+    for (let j=2; j<=(Math.ceil(i/2)); j++){ 
+    // take current iteration and see if it is divisible by any of the numbers below it (loop through potential divisors)
+    // stop halfway because any potential multiplers would have been found in first half
+      if (i % j == 0) { 
+        break;
+      // If divided equally, then not a prime and move onto next number
+      }else if(j==(Math.ceil(i/2))){ 
+      // If reached end of divisors, add number to prime list
+        primes.push(i);
+      }
+    }
+  }
+  return primes.reduce((a,b) => a + b);
+  // reduce to single sum
+}
+
+sumPrimes(977);
