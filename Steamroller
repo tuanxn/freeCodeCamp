@@ -1,0 +1,37 @@
+/*
+Flatten a nested array. You must account for varying levels of nesting.
+*/
+
+function steamrollArray(arr) {
+  
+  const finalArr = [];
+
+  (function checkForArr(arr) {
+    if (Object.keys(arr).length === 0 && JSON.stringify(arr) == '{}')  {
+ // if (Object.keys(arr).length === 0 && arr.toString() == '[object Object]')  { 
+ // second way of doing this. When you call a toString on an empty object it returns the string '[object Object]'
+ // note that if we called toString() on an empty array, it would return empty, hence why we can use it here to differentiate
+ // empty arrays vs empty objects
+      finalArr.push(arr);
+      // if empty object, push object to array
+    }else{
+      for (let i=0; i<arr.length; i++) {
+      // loop through array elements
+        if (typeof(arr[i]) == 'object') {
+          // if current element is an array, use recursion to go into that array and loop through elements
+          checkForArr(arr[i]);
+        }else {
+          finalArr.push(arr[i]);
+          // if element is not an array, push to final array
+        }
+      }
+    }
+  })(arr);
+
+  console.log(finalArr);
+  return finalArr;
+}
+
+// 2 tricky cases
+steamrollArray([1, {}, [3, [[4]]]]);
+steamrollArray([1, [], [3, [[4]]]]);
