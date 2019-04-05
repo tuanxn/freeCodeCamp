@@ -1,0 +1,25 @@
+/*
+Given the array arr, iterate through and remove each element starting from the first element (the 0 index) 
+until the function func returns true when the iterated element is passed through it.
+Then return the rest of the array once the condition is satisfied, otherwise, arr should be returned as an empty array.
+*/
+
+function dropElements(arr, func) {
+  let arrLen = arr.length;
+  // store length of array before shifting, otherwise removal will be offset
+  for (let i=0; i<arrLen; i++) {
+    if (func(arr[i])) {
+      break;
+      // if function returns true, break
+    }else {
+      arr.shift();
+      // if not, remove element from front of array
+      i--;
+      // decrement index count since we just removed an element from the array
+    }
+  }
+  console.log(arr);
+  return arr;
+}
+
+dropElements([1, 2, 3, 4], function(n) {return n >= 3;});
