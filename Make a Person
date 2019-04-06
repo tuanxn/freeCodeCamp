@@ -1,0 +1,42 @@
+/*
+Fill in the object constructor with the following methods below:
+getFirstName() getLastName() getFullName() setFirstName(first) setLastName(last) setFullName(firstAndLast)
+Run the tests to see the expected output for each method.
+The methods that take an argument must accept only one argument and it has to be a string.
+These methods must be the only available means of interacting with the object.
+*/
+
+var Person = function(firstAndLast) {
+
+  let FullName = firstAndLast;
+  // if the object's properties are private, then they should be created with a variable instead
+  // otherwise user's would be able to access FullName using objName.FullName or objName['FullName']
+
+  this.getFullName = function() {
+    return FullName;
+  }
+
+  this.getFirstName = function() {
+    return FullName.split(' ')[0];
+  }
+
+  this.getLastName = function() {
+    return FullName.split(' ')[1];
+  }
+
+  this.setFirstName = function(first) {
+    FullName = first + ' ' + FullName.split(' ')[1];
+  }
+
+  this.setLastName = function(last) {
+    FullName = FullName.split(' ')[0] + ' ' + last;
+  }
+
+  this.setFullName = function(firstAndLast) {
+    FullName = firstAndLast;
+  }
+  
+};
+
+var bob = new Person('Bob Ross');
+bob.getFullName();
