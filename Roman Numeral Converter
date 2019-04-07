@@ -1,0 +1,49 @@
+// Visit https://www.mathsisfun.com/roman-numerals.html
+
+function convertToRoman(num) {
+ 
+  let numbers = num.toString();
+  let numDigits = numbers.length;
+  console.log(numDigits);
+
+  let roman = '';
+
+  for (let i=0; i<numDigits; i++) {
+    let currNum = Number(numbers[numDigits-1-i]);
+    console.log(currNum);
+    function convert(currNum, single, mid, upper) {
+      if (currNum < 4) {
+        roman = (single.repeat(currNum)).concat(roman);
+      }else if (currNum == 4) {
+        roman = (single + mid).concat(roman);
+      }else if (currNum > 4 && currNum < 9) {
+        roman = (mid + single.repeat(currNum-5)).concat(roman);
+      }else {
+        roman = (single + upper).concat(roman);
+      }
+    }
+
+    console.log(roman);
+    switch (i) {
+      case 3:
+        roman = ('M'.repeat(currNum)).concat(roman);
+        console.log(roman);
+        break;
+      case 2:
+        convert(currNum, 'C', 'D', 'M');
+        break;
+      case 1:
+        convert(currNum, 'X', 'L', 'C');
+        break;
+      case 0:
+        convert(currNum, 'I', 'V', 'X');
+        break;
+    }
+  }
+
+  console.log(roman);
+ 
+  return roman;
+}
+
+convertToRoman(2598);
