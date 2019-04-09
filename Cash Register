@@ -1,0 +1,90 @@
+/*
+Design a cash register drawer function checkCashRegister() that accepts purchase price as the first argument (price), 
+payment as the second argument (cash), and cash-in-drawer (cid) as the third argument.
+cid is a 2D array listing available currency.
+The checkCashRegister() function should always return an object with a status key and a change key.
+Return {status: "INSUFFICIENT_FUNDS", change: []} if cash-in-drawer is less than the change due, 
+or if you cannot return the exact change.
+Return {status: "CLOSED", change: [...]} with cash-in-drawer as the value for the key change if it is equal to the change due.
+Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, 
+sorted in highest to lowest order, as the value of the change key.
+*/
+
+function checkCashRegister(price, cash, cid) {
+  const denoms = [0.01, 0.05, 0.1, 0.25, 1, 5, 10, 20, 100];
+  // Create an array of denominations to loop through
+  let change = [];
+  // Final array of change
+  let status = 'INSUFFICIENT_FUNDS';
+  let total = cid.reduce((agg, bill) => agg + Number(bill[1]), 0).toFixed(2);
+  // Find current cash drawer total using reduce. The second 0 argument sets agg with a starting value of 0.
+  let changeDue = cash-price;
+
+  console.log(total);
+  console.log(changeDue);
+
+  if (changeDue < total) {
+  // If we have enough change in the drawer
+    const denominations = [];
+    // Create a sub-array of the denominations we will be using
+    for (let i=0; i<denoms.length; i++) {
+      if (changeDue / denoms[i] >= 1) {
+        denominations.unshift(denoms[i]);
+        // If the current denomination is a divisor of the change due, add to sub-array of applicable denominations
+      }
+    }
+
+    console.log(denominations);
+
+    for (let j=0; j<denominations.length; j++) {
+    // Loop through sub-array of applicable denominations
+      changeDue = Math.round(changeDue * 100) / 100;
+      // Round to fix floating point inaccuracy
+      let denomsNeeded = (Math.floor(changeDue / denominations[j]) * denominations[j]);
+      // Determine the amount we would need in the current denomination
+      let denomsAvailable = cid[denominations.length-j-1][1];
+      // Check how much we have in the drawer for this denomination
+      let denomName = cid[denominations.length-j-1][0];
+      // Retrieve name of current denomination
+      if (denomsNeeded > denomsAvailable) {
+      // If the number of bills needed is greater than that available, pull all the bills available
+        change.push([denomName, denomsAvailable]);
+        changeDue -= denomsAvailable;
+      }else if (denomsNeeded != 0 && denomsAvailable != 0) {
+      // Otherwise if there is a need for this denom and we have these denoms available, then pull the denoms needed
+        change.push([denomName, denomsNeeded]);
+        changeDue -= denomsNeeded;
+      }
+    }
+    
+    // After we apply all the denominations, check to see if all the change was given or if we didn't have exact change
+
+    if (changeDue == 0 ) {
+      status = 'OPEN';
+    }else if (changeDue > 0) {
+      change = [];
+    }
+  
+  }else if (changeDue == total) {
+    status = 'CLOSED';
+    change = cid;
+  }
+
+  console.log(JSON.stringify({status: status, change: change}));
+
+  return {status: status, change: change};
+}
+
+// Example cash-in-drawer array:
+// [["PENNY", 1.01],
+// ["NICKEL", 2.05],
+// ["DIME", 3.1],
+// ["QUARTER", 4.25],
+// ["ONE", 90],
+// ["FIVE", 55],
+// ["TEN", 20],
+// ["TWENTY", 60],
+// ["ONE HUNDRED", 100]]
+
+checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], 
+["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])
