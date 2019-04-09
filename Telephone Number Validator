@@ -1,0 +1,17 @@
+/*
+Return true if the passed string looks like a valid US phone number.
+*/
+
+function telephoneCheck(str) {
+  return (/^1?[ -]?(\(\d{3}\)|(\d{3}))[ -]?(\d{3})[ -]?(\d{4})$/).test(str);
+  // From the beginning of the string
+  // Try to match country code 1 or there should be nothing
+  // Next character only allow a space, dash, or there should be nothing
+  // Use OR operator to test 3 digit string with parentheses or no parentheses
+  // Next character only allow a space, dash, or there should be nothing
+  // Match 3 digit string
+  // Next character only allow a space, dash, or there should be nothing
+  // Match 4 digit string and this should be the end of the string (nothing after it)
+}
+
+console.log(telephoneCheck("555-555-5555"));
