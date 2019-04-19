@@ -5,24 +5,28 @@ For example, 2 is a prime number because it's only divisible by one and two.
 */
 
 function sumPrimes(num) {
-  const primes = [2]; 
-  // first prime
-  for (let i=2; i<=num; i++) { 
-  // iterate through all numbers up until the num argument
-    for (let j=2; j<=(Math.ceil(i/2)); j++){ 
-    // take current iteration and see if it is divisible by any of the numbers below it (loop through potential divisors)
-    // stop halfway because any potential multiplers would have been found in first half
-      if (i % j == 0) { 
+  let primes = [];
+  // Iterate through all numbers that could possibly be primes starting at 2 until the number (inclusive)
+  for (let i=2; i<=num; i++) {
+    // Set prime flag to true by default when testing each possible number
+    let isPrime = true;
+    // Loop through all numbers from 2 to half the number currently being tested
+    for (let j=2; j<=i/2; j++) {
+      // If the current number is divislbe by any number below it, than it is not a prime
+      if (i % j == 0) {
+        // Set prime flag to false and break out of loop to go to next testing number
+        isPrime = false;
         break;
-      // If divided equally, then not a prime and move onto next number
-      }else if(j==(Math.ceil(i/2))){ 
-      // If reached end of divisors, add number to prime list
-        primes.push(i);
       }
     }
+    // Only if the testing number wasn't divisible by the numbers below it, then add to the primes array
+    if (isPrime) {
+      primes.push(i);
+    }
   }
-  return primes.reduce((a,b) => a + b);
-  // reduce to single sum
+  console.log(primes);
+  // Sum the primes array calculated
+  return primes.reduce((agg, num) => agg + num);
 }
 
-sumPrimes(977);
+console.log(sumPrimes(10));
