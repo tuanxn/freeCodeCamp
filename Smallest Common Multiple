@@ -11,71 +11,63 @@ evenly divisible by all numbers between 1 and 3. The answer here would be 6.
 // multiply the greatest number of occurrences of each multiplier 
 
 function smallestCommons(arr) {
-
-// sort array ascending
-arr.sort(function (a, b) {
-  return a - b;
-});
-
-const primeMultiplierArr = [];
-// initialize the array that will hold the prime multipliers of all numbers in the range
-
-for (let rangeNum = arr[0]; rangeNum <= arr[1]; rangeNum++) {
-  let rangeNumMultipliers = [rangeNum];
-  // initialize an array with the current number in the range that we will break down into primes
-
-  let level = 0;
-  // use with console.log to track what level of recursion the function is at
-
-  // function to return an array of prime multiples of a number in the range
-  (function getPrime(rangeNumMultipliers, level) {
-    let arrLen = rangeNumMultipliers.length;
-    // necessary so that we don't not loop more than the original length before recursion increased the array length
-    for (let i=0; i<arrLen; i++) {
-      // loop through each element in the array
-      let elem = rangeNumMultipliers[i];
-      for (let j=2; j<=Math.floor(elem/2); j++) {
-        // loop through each number from 2 to half of the current loop to check if it's a divisor of the element
-        // note that primes that enter this loop will never satisfy the if condition
-        if (elem % j == 0) {
-          // if current number is a divisor of the element
-          rangeNumMultipliers.splice(i, 1, j, elem / j);
-          // take out the element and replace with the divisor (a prime) and the quotient
-          getPrime(rangeNumMultipliers, level +1);
-          // recursively pass in the new array so each new quotient will get broken down into primes
-          break;
-          // once recursion is finished (only primes remaining), break from inner loop
-        }
-      }
-    }
-  })(rangeNumMultipliers, level);
-  // call the function right away by passing in parameters from our smallestCommons function
-
-  let copyOfPrimeMultiplierArr = [].concat(primeMultiplierArr);
-  // create a copy of the array of all prime multipliers so far
-
-  for (let primeIndex = 0; primeIndex < rangeNumMultipliers.length; primeIndex++) {
-    // loop through the prime multipliers for the current number
-    let foundIndex = copyOfPrimeMultiplierArr.indexOf(rangeNumMultipliers[primeIndex]);
-    // return index position of current prime in the copy of all prime list (if any)
-    if (foundIndex > -1 ) {
-      copyOfPrimeMultiplierArr.splice(foundIndex,1);
-      // if found in all prime list already, remove from copy of all prime list (allows multiples to be added)
-    }else {
-      primeMultiplierArr.push(rangeNumMultipliers[primeIndex]);
-      // if not found, add prime to all prime list (not the copy)
-    }
+  // Find min and max of the 2 elements in the array
+  let min = arr[0];
+  let max = arr[1];
+  if (max < min) {
+    min = arr[1];
+    max = arr[0];
   }
 
+  // Create a master array holding the prime multipliers of all sequential numbers
+  let primeX = [];
+
+  // Loop through min to max inclusive
+  for (let i=min; i<=max; i++) {
+    // Create temporary array to hold prime multiplers of current number
+    let temp = [];
+    // Create function that we will recursively call
+    (function findPrimeX(i) {
+      // Loop through 2 to current number passed in (first iteration will be current number)
+      for (let j=2; j<=i; j++) {
+        // See if current number is divisible by the current iteration
+        if (i % j == 0) {
+          // If so, find the divisor and quotient
+          let divisor = j;
+          let quotient = i / j;
+          // Add divisor to the temporary arry holding prime multipliers of the current number
+          temp.push(divisor);
+          // Recursively call the same function on the quotient calculated
+          findPrimeX(quotient);
+          // Add break so that when no more quotients found and returns to calling function, the loop won't continue
+          break;
+        }
+      }
+    // Make this an IIFE (Immediately Invoked Function Expression) and pass i for first call
+    })(i);
+    console.log(temp);
+    
+    // May want to sort temp array at this point?
+    
+    // Create copy of master prime multiplier array to test if primes already exist in master array
+    let subPrimeX = primeX.slice(0);
+    // Loop through prime multiplier array of current number
+    for (let k=0; k<temp.length; k++) {
+      // Check to see if the prime already exists in the master array
+      let foundIndex = subPrimeX.indexOf(temp[k]);
+      if (foundIndex == -1) {
+        // If not, add it to the master array
+        primeX.push(temp[k]);
+      }else {
+        // If so, create subarray after found instance so we can test if the prime is found again
+        subPrimeX = subPrimeX.slice(foundIndex+1);
+      }
+    }
+  }
+  console.log(primeX);
+  // Multiply all elements of master array to arrive at smallest common multiple of all sequential numbers between 2 elements of array
+  return primeX.reduce((agg, next) => agg * next);
 }
 
-console.log(primeMultiplierArr.sort(function (a,b) { return a-b }));
-// log sorted list of all prime numbers for reference
 
-return primeMultiplierArr.reduce((a,b) => a * b);
-// reduce by multiplying everything in the all primes list
-
-}
-
-
-console.log(smallestCommons([18, 23])); // returns 6056820
+console.log(smallestCommons([2,10]));
